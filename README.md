@@ -11,6 +11,7 @@ pengguna wifi yang menggunakan wifi tanpa sepengetahuan/izin pemilik. Penyalahgu
    MAC addressnya, jangan lupa di SAVE
 3. Kembali ke menu utama, lalu pilih nomor 1 untuk menendang orang lain yang tidak
    ada di whitelist
+
 ##Special Thanks to
 Linset
 -Beberapa bagian kodenya terinspirasi dari script linset
