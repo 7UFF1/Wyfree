@@ -1,17 +1,57 @@
-## Tentang
-Wyfree adalah sebuah script yang berfungsi untuk menendang pengguna wifi yang terkoneksi. Script ini dibuat hanya untuk menendang 
-pengguna wifi yang menggunakan wifi tanpa sepengetahuan/izin pemilik. Penyalahgunaan script ini adalah sepenuhnya tanggung jawab penggunanya.
-## Persyaratan
--Distribusi Linux Mempunyai Program Yang Diperlukan
--Wireless Network Adaptor
--Hak Akses Root/Admin
-## Cara Menggunakannya
-1. Pertama-pertama, buat interface mon0 jika belum ada dengan memilih nomor 2
-2. Jika ingin menambahkan seseorang kedalam whitelist, pilih nomor 9 lalu nomor 2, tambah
-   MAC addressnya, jangan lupa di SAVE
-3. Kembali ke menu utama, lalu pilih nomor 1 untuk menendang orang lain yang tidak
-   ada di whitelist
+# Wyfree
+> Free your wifi
 
-##Special Thanks to
-Linset
--Beberapa bagian kodenya terinspirasi dari script linset
+Wyfree adalah sebuah script yang berfungsi untuk menendang pengguna wifi yang terkoneksi, dengan menggunakan tool aireplay-ng atau mdk3.
+
+## Disclaimer
+
+Scipt ini dibuat hanya untuk menendang pengguna wifi yang menggunakan wifi tanpa sepengetahuan dan izin pemilik. Penyalahgunaan script ini adalah sepenuhnya tanggung jawab penggunanya.
+
+## Persyaratan
+
+Script ini memerlukan sistem operasi berbasis Linux. Kami merekomendasikan Kali Linux. Untuk menjalankan script diperlukan sebuah adaptor wireless dan tool/program berikut:
+
+- iw
+- iwconfig
+- mdk3
+- aireplay-ng
+- airodump-ng
+- xterm
+
+## Pemasangan
+
+```bash
+git clone https://github.com/7UFF1/Wyfree.git
+cd Wyfree/
+chmod +x wyfree
+```
+
+## Cara menggunakannya
+
+```bash
+sudo ./wyfree
+```
+
+## Changelog
+
+Untuk melihat perubahan apa saja yang terjadi pada setiap versi, cek file [CHANGELOG.md](https://github.com/7UFF1/Wyfree/blob/master/CHANGELOG.md)
+
+
+## Kontribusi
+
+Jika kamu ingin berkontribusi, silahkan cek file [CONTRIBUTING.md](https://github.com/7UFF1/Wyfree/blob/master/CONTRIBUTING.md) dulu
+
+## Author
+
+* **[7UFF1](https://github.com/7UFF1)**
+* **[bedman17](https://github.com/bedman17)**
+
+Lihat juga daftar [kontributor](https://github.com/7UFF1/wyfree/contributors) yang berpartisipasi dalam proyek ini.
+
+#Versioning
+
+Script ini mematuhi [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## Lisensi
+
+Kode dalam proyek ini dilisensikan di bawah lisensi [MIT](https://github.com/7UFF1/Wyfree/blob/master/LICENSE).
