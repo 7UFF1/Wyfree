@@ -48,7 +48,7 @@ Jika kamu ingin berkontribusi, silahkan cek file [CONTRIBUTING.md](https://githu
 
 Lihat juga daftar [kontributor](https://github.com/7UFF1/wyfree/contributors) yang berpartisipasi dalam proyek ini.
 
-#Versioning
+## Versioning
 
 Script ini mematuhi [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
