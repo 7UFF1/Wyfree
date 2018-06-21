@@ -5,7 +5,7 @@ Semua perubahan penting pada proyek ini akan didokumentasikan dalam file ini.
 ### Ditambahkan
 - File CHANGELOG.md ditambahkan
 - Opsi untuk menggunakan tool aireplay-ng
-- File pengaturan
+- File pengaturan telah ditambahkan
 - Opsi menjalankan mdk3 dalam mode blacklist
 - Shutting down function ditambahkan
 

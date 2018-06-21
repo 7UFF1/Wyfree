@@ -5,7 +5,7 @@ Wyfree adalah sebuah script yang berfungsi untuk menendang pengguna wifi yang te
 
 ## Disclaimer
 
-Scipt ini dibuat hanya untuk menendang pengguna wifi yang menggunakan wifi tanpa sepengetahuan dan izin pemilik. Penyalahgunaan script ini adalah sepenuhnya tanggung jawab penggunanya.
+Scipt ini di buat hanya untuk menendang pengguna wifi yang menggunakan wifi tanpa sepengetahuan dan izin pemilik. Penyalahgunaan script ini adalah sepenuhnya tanggung jawab penggunanya.
 
 ## Persyaratan
 
