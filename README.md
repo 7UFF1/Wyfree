@@ -1,3 +1,7 @@
+[![os](https://img.shields.io/badge/Supported_OS-linux-orange.svg)](https://github.com/7UFF1/Wyfree)
+[![version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/7UFF1/Wyfree/releases)
+[![build](https://img.shields.io/badge/build-stable-brightgreen.svg)](https://github.com/7UFF1/Wyfree)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/7UFF1/Wyfree/blob/master/LICENSE)
 # Wyfree
 > Free your wifi
 
@@ -47,10 +51,6 @@ Jika kamu ingin berkontribusi, silahkan cek file [CONTRIBUTING.md](https://githu
 * **[bedman17](https://github.com/bedman17)**
 
 Lihat juga daftar [kontributor](https://github.com/7UFF1/wyfree/contributors) yang berpartisipasi dalam proyek ini.
-
-## Versioning
-
-Script ini mematuhi [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Lisensi
 
