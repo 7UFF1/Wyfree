@@ -1,7 +1,3 @@
-[![os](https://img.shields.io/badge/Supported_OS-linux-orange.svg)](https://github.com/7UFF1/Wyfree)
-[![version](https://img.shields.io/badge/version-1.1.0-blue.svg)](https://github.com/7UFF1/Wyfree/releases)
-[![build](https://img.shields.io/badge/build-stable-brightgreen.svg)](https://github.com/7UFF1/Wyfree)
-[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/7UFF1/Wyfree/blob/master/LICENSE)
 # Wyfree
 > Free your wifi
 
