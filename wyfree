@@ -121,7 +121,7 @@ keluar() {
     echo -e "${Color_Off}[${Red}-${Color_Off}] File ${BWhite}ESSID ${Red}dihapus${Color_Off}"
   fi
   echo -e "${Color_Off}[${Green}+${Color_Off}] Bersih-bersih${BWhite} selesai"
-	echo -e -n "${Color_Off}[${Green}+${Color_Off}] Terimakasih telah menggunakan ${IBlue}Wyfree${Green}" && sleep 3.5 &
+	echo -e -n "${Color_Off}[${Green}+${Color_Off}] Terimakasih telah menggunakan ${IBlue}Wyfree${Green}" && sleep 1.5 &
 	animasi "$!"
 	clear
 	exit
@@ -196,7 +196,7 @@ syarat() {
 	fi
 	sleep 0.025
 	if $persyaratan ;then
-    echo -e -n "${Color_Off}[${Red}#${Color_Off}] Error Loading...${Red}"&& sleep 3.5 &
+    echo -e -n "${Color_Off}[${Red}#${Color_Off}] Error Loading...${Red}"&& sleep 1.5 &
     animasi "$!"
 		keluar
 	fi
@@ -226,7 +226,7 @@ cfg_haskey() { # path, key
 }
 judul
 syarat
-echo -e -n "${Color_Off}[${Green}#${Color_Off}] Loading Wyfree..${IGreen}"&& sleep 3.5 &
+echo -e -n "${Color_Off}[${Green}#${Color_Off}] Loading Wyfree..${IGreen}"&& sleep 1.5 &
 animasi "$!"
 ##Membuat file whitelist dan me-whitelist MAC address kamu
 if ! test -e  $HOME/.wyfree/whitelist.txt;then
@@ -268,7 +268,7 @@ nomor1() {
 			nomor1
 		fi
 	else
-		echo -e -n "${White}Interface mon0 tidak ditemukan, silahkan buat dulu ${Red}"&& sleep 3.5 &
+		echo -e -n "${White}Interface mon0 tidak ditemukan, silahkan buat dulu ${Red}"&& sleep 1.5 &
 		animasi "$!"
 		menuutama
 	fi
@@ -338,7 +338,7 @@ choosemac() {
         done
       echo -e -n "${bssid[$i-1]}"
     else
-      echo -e -n "${White}$i. ${White}${essid[$i-1]}"
+      echo -e -n "${White}$i. ${White}${essid[$i-1]}" 
         for ((x=1; x<=(36-${#essid[$i-1]}); x++))
         do
           echo -e -n " "
@@ -355,7 +355,7 @@ choosemac() {
     if [[ $jawab -le $jumlah && $jawab -gt 0 ]] ;then
       xterm -T "Aireplay-ng" -e "aireplay-ng --deauth 0 -a ${bssid[$jawab-1]} --ignore-negative-one mon0"
       judul
-      echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 3.5 &
+      echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 1.5 &
     	animasi "$!"
     	menuutama
     elif [[ $jawab == "99" ]] ;then
@@ -382,7 +382,7 @@ nomor12() {
 	judul
 	echo -e "${Red}Sedang Menendang..." && xterm -T "mdk3 mode ${wb}" -e "mdk3 mon0 d -w $HOME/.wyfree/${wb}.txt"
   judul
-	echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 3.5 &
+	echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 1.5 &
 	animasi "$!"
 	menuutama
 }
@@ -391,7 +391,7 @@ nomor2() {
   sleep 1
 	if test -d /sys/class/net/mon0 ;then
     sleep 0.025
-	  echo -e -n "${White}Interface mon0 sudah ada ${IYellow}"&& sleep 3.5 &
+	  echo -e -n "${White}Interface mon0 sudah ada ${IYellow}"&& sleep 1.5 &
 		animasi "$!"
 		menuutama
 	else echo "Membuat interface mon0..."
@@ -400,7 +400,7 @@ nomor2() {
 		iwconfig mon0 mode monitor
 		ifconfig mon0 up
     sleep 0.025
-		echo -e -n "${White}Interface mon0 berhasil di buat ${IGreen}"&& sleep 3.5 &
+		echo -e -n "${White}Interface mon0 berhasil di buat ${IGreen}"&& sleep 1.5 &
 		animasi "$!"
 		menuutama
 	fi
@@ -409,11 +409,11 @@ nomor3() {
   echo "Checking interface mon0..."
 	 sleep 1
 	 if test -d /sys/class/net/mon0 ;then
-     echo -e -n "${White}Interface mon0 sudah ada dan siap di gunakan ${IGreen}"&& sleep 3.5 &
+     echo -e -n "${White}Interface mon0 sudah ada dan siap di gunakan ${IGreen}"&& sleep 1.5 &
      animasi "$!"
      menuutama
 	 else
-     echo -e -n "${White}Interface mon0 tidak ditemukan ${Red}"&& sleep 3.5 &
+     echo -e -n "${White}Interface mon0 tidak ditemukan ${Red}"&& sleep 1.5 &
      animasi "$!"
      menuutama
    fi
@@ -423,11 +423,11 @@ nomor4() {
   sleep 1
   if test -d /sys/class/net/mon0 ;then
     iw mon0 del
-    echo -e -n "${White}Interface mon0 berhasil dihapus ${IGreen}"&& sleep 3.5 &
+    echo -e -n "${White}Interface mon0 berhasil dihapus ${IGreen}"&& sleep 1.5 &
     animasi "$!"
     menuutama
   else
-    echo -e -n "${White}Interface mon0 tidak ditemukan ${Red}"&& sleep 3.5 &
+    echo -e -n "${White}Interface mon0 tidak ditemukan ${Red}"&& sleep 1.5 &
     animasi "$!"
     menuutama
   fi
@@ -473,11 +473,11 @@ nomor91() {
     else
       cfg_write $pengaturan simpan false
     fi
-    echo -e -n ${White}Interface mon0 akan ${gada} ${White}ketika keluar ${IGreen}&& sleep 3.5 &
+    echo -e -n ${White}Interface mon0 akan ${gada} ${White}ketika keluar ${IGreen}&& sleep 1.5 &
     animasi "$!"
     nomor9
   elif [[ $yatidak == "tidak" ]] ;then
-    echo -e -n ${White}Interface mon0 akan ${ada} ${White}ketika keluar ${Red}&& sleep 3.5 &
+    echo -e -n ${White}Interface mon0 akan ${ada} ${White}ketika keluar ${Red}&& sleep 1.5 &
     animasi "$!"
     nomor9
   else
@@ -501,11 +501,11 @@ nomor92() {
   echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read yatidak
   if [ $yatidak == "ya" ] ;then
     cfg_write $pengaturan mode $kebalikan
-    echo -e -n "${White}Berhasil di ubah menjadi mode ${kebalikan}${IGreen}" && sleep 3.5 &
+    echo -e -n "${White}Berhasil di ubah menjadi mode ${kebalikan}${IGreen}" && sleep 1.5 &
     animasi "$!"
     nomor9
   elif [ $yatidak == "tidak" ] ;then
-    echo -e -n "${White}mdk3 akan tetap dijalankan pada mode ${wb}${red}" && sleep 3.5 &
+    echo -e -n "${White}mdk3 akan tetap dijalankan pada mode ${wb}${red}" && sleep 1.5 &
     animasi "$!"
     nomor9
   else
