@@ -275,8 +275,8 @@ nomor1() {
 }
 nomor11() {
   judul
-  if test -e $HOME/.wyfree/airdump-01.csv ;then
-    rm $HOME/.wyfree/airdump-01.csv
+  if test -e $HOME/.wyfree/*.csv ;then
+    rm $HOME/.wyfree/*.csv
   fi
   if test -e $HOME/.wyfree/bssid.txt ;then
     rm $HOME/.wyfree/bssid.txt
@@ -338,7 +338,7 @@ choosemac() {
         done
       echo -e -n "${bssid[$i-1]}"
     else
-      echo -e -n "${White}$i. ${White}${essid[$i-1]}" 
+      echo -e -n "${White}$i. ${White}${essid[$i-1]}"
         for ((x=1; x<=(36-${#essid[$i-1]}); x++))
         do
           echo -e -n " "
