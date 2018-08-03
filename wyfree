@@ -260,26 +260,32 @@ menuutama() {
 }
 #Function Untuk Menu Utama
 nomor1() {
-	if [[ -z $mon_terpilih ]] ;then
+	if ! [[ -z $mon_terpilih ]] ;then
+    if test -d /sys/class/net/$mon_terpilih ;then
+      judul
+      sleep 0.025 && echo -e "${White}Pilih tool yang ingin digunakan:"
+      sleep 0.025 && echo -e "${White}1. ${IBlue}Aireplay-ng"
+      sleep 0.025 && echo -e "${White}2. ${IBlue}Mdk3"
+      sleep 0.025 && echo -e "${White}0. ${Red}Kembali ke menu utama"
+      echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read jawab
+      if [ $jawab == 1 ] ;then
+        nomor11
+      elif [ $jawab == 2 ] ;then
+        nomor12
+      elif [ $jawab == 0 ] ;then
+        menuutama
+      else
+        nomor1
+      fi
+    else
+      echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
+      animasi "$!"
+      menuutama
+    fi
+	else
     echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
     animasi "$!"
     menuutama
-	else
-    judul
-    sleep 0.025 && echo -e "${White}Pilih tool yang ingin digunakan:"
-    sleep 0.025 && echo -e "${White}1. ${IBlue}Aireplay-ng"
-    sleep 0.025 && echo -e "${White}2. ${IBlue}Mdk3"
-    sleep 0.025 && echo -e "${White}0. ${Red}Kembali ke menu utama"
-    echo -e -n "${Red}[${IBlue}Wyfree${Yellow}@${White}${hostname}${Red}]-[${Yellow}~${Red}] ${White}"& read jawab
-    if [ $jawab == 1 ] ;then
-      nomor11
-    elif [ $jawab == 2 ] ;then
-      nomor12
-    elif [ $jawab == 0 ] ;then
-      menuutama
-    else
-      nomor1
-    fi
 	fi
 }
 nomor11() {
@@ -509,26 +515,38 @@ addmon() {
 nomor3() {
   echo "Checking interface monitor..."
 	sleep 1
-  if [[ -z $mon_terpilih ]] ;then
+  if ! [[ -z $mon_terpilih ]] ;then
+    if test -d /sys/class/net/$mon_terpilih ;then
+      echo -e -n "${White}Interface monitor ${Red}$mon_terpilih${White} siap digunakan${IGreen}"&& sleep 2 &
+      animasi "$!"
+      menuutama
+    else
+      echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
+      animasi "$!"
+      menuutama
+    fi
+  else
     echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
     animasi "$!"
     menuutama
- else
-    echo -e -n "${White}Interface monitor ${Red}$mon_terpilih${White} siap digunakan${IGreen}"&& sleep 2 &
-    animasi "$!"
-    menuutama
- fi
+  fi
 }
 nomor4() {
   echo "Checking interface monitor..."
   sleep 1
-  if [[ -z $mon_terpilih ]] ;then
-    echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
-    animasi "$!"
-    menuutama
+  if ! [[ -z $mon_terpilih ]] ;then
+    if test -d /sys/class/net/$mon_terpilih ;then
+      iw $mon_terpilih del
+      echo -e -n "${White}Interface ${Red}$mon_terpilih${White} berhasil dihapus${IGreen}"&& sleep 2 &
+      animasi "$!"
+      menuutama
+    else
+      echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
+      animasi "$!"
+      menuutama
+    fi
   else
-    iw $mon_terpilih del
-    echo -e -n "${White}Interface $mon_terpilih berhasil dihapus${IGreen}"&& sleep 2 &
+    echo -e -n "${White}Interface monitor belum ditentukan${Red}"&& sleep 2 &
     animasi "$!"
     menuutama
   fi
